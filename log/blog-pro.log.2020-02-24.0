@@ -1,0 +1,5 @@
+2020-02-24 14:34:48.582  INFO 13932 --- [restartedMain] com.myproject.myblog.MyBlogApplication   : Starting MyBlogApplication on AB13OOKB16CWA5U with PID 13932 (D:\software\myproject\my-blog\target\classes started by Administrator in D:\software\myproject\my-blog)
+2020-02-24 14:34:48.583  INFO 13932 --- [restartedMain] com.myproject.myblog.MyBlogApplication   : The following profiles are active: pro
+2020-02-24 14:34:51.969  WARN 13932 --- [restartedMain] o.h.b.i.SessionFactoryBuilderImpl        : Unrecognized hbm2ddl_auto value : noe.  Supported values include create, create-drop, update, and validate.  Ignoring
+2020-02-24 14:34:52.621  WARN 13932 --- [restartedMain] .t.AbstractTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-02-24 14:34:53.395  INFO 13932 --- [restartedMain] com.myproject.myblog.MyBlogApplication   : Started MyBlogApplication in 5.334 seconds (JVM running for 6.605)

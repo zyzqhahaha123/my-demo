@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!--定义Thymeleaf-->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <!-- 移动端浏览的一个缩放-->
+    <meta name="=viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:replace="${title}">博客详情</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.css" th:href="@{/lib/editormd/css/editormd.css}">
+</head>
+<body>
+
+<!--导航 -->
+<!--ui表示ui组件  inverted(反转)目的是让页面成黑色 segment(片段)  attached:为了让黑框没有圆角-->
+<nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container"><!--container 容器-->
+        <!--menu菜单  因为上面用了inverted所以下面也要用inverted,保持风格一致,不然会是白色-->
+        <div class="ui inverted secondary menu stackable">
+            <!-- 定义一个Log-->
+            <h1 class="ui header teal item">管理后台</h1>
+            <a href="#" th:href="@{/admin/listBlog}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>博客</a>
+            <a href="#" th:href="@{/admin/listType}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>
+            <a href="#" th:href="@{/admin/listTag}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>标签</a>
+            <div class="right m-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img class="ui circular image" th:src="@{${session.user.avatar}}" src="/images/blgs_man1.jpg" style="width: 25px;height: 25px">
+                        <span th:text="${session.user.nickname}"></span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <!--下拉的菜单-->
+                    <div class="menu">
+                        <a href="#" th:href="@{/admin/logout}" class="item">注销</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+    <!-- 底部-->
+    <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive" >
+        <div class="ui center aligned container">
+            <div class="ui inverted  divided grid  mobile reversed stackable">
+                <div class="three wide column">
+                    <div class="ui inverted link list">
+                        <div class="item">
+                            <img class="ui rounded image" alt="图片路径不对" style="width: 10em" th:href="@{/images/myWex.jpg}" src="/images/myWex.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="three wide column m-text-thin m-text-space  ">
+                    <h4 class="ui inverted header m-opacity-mini">
+                        最新博客
+                    </h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">用户故事 (user story)</a>
+                        <a href="#" class="item">用户故事 (user story)</a>
+                        <a href="#" class="item">用户故事 (user story)</a>
+                    </div>
+
+                </div>
+                <div class="three wide column m-opacity-mini ">
+                    <h4 class="ui inverted header m-text-thin m-text-space ">
+                        联系方式
+                    </h4>
+                    <div class="ui inverted link list m-opacity-mini">
+                        <a href="#" class="item">Email：2766796710@qq.com</a>
+                        <a href="#" class="item">QQ：2766796710</a>
+                    </div>
+                </div>
+                <div class="seven wide column m-opacity-mini ">
+                    <h4 class="ui inverted header m-text-thin m-text-space ">
+                        Introduce
+                    </h4>
+                    <div class="ui inverted link list">
+                        <p class="item">这是我写的的一个博客，请指教</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-space m-opacity-miny">这是一段空的描述啊啊啊啊啊啊啊啊啊啊</p>
+
+        </div>
+    </footer>
+
+
+    <th:block th:fragment="script">
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+        <script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+        <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.js}"></script>
+        <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.js}"></script>
+        <script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.js}"></script>
+        <script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.js}"></script>
+    </th:block>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <!-- 移动端浏览的一个缩放-->
+    <meta name="=viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>博客管理登录</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+<br>
+<br>
+
+<div class="ui m-container-small m-padded-tb-massive" style="width: 30em !important;">
+    <div class="ui container">
+        <div class="ui middle aligned center aligned grid">
+            <div class="ui column">
+                <h2 class="ui teal header ">
+                    <!--                <img src="assets/images/logo.png" class="image">-->
+                    <div class="ui content ">
+                    管理后台登录
+                    </div>
+                 </h2>
+<form class="ui large form" method="post" action="#" th:action="@{/admin/login}">
+    <div class="ui segment">
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="username" placeholder="账号">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="password" placeholder="密码">
+            </div>
+        </div>
+        <button class="ui fluid large teal submit button">登  录</button>
+    </div>
+
+    <div class="ui error mini message"></div>
+<!--    th:unless="${#String.isEntity(message)}" th:unless,除非。。。 判断是否显示 th:text="${message}显示内容 -->
+    <div cl="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+</form>
+
+<!--            <div class="ui message">-->
+<!--                New to us? <a href="#">Sign Up</a>-->
+<!--            </div>-->
+</div>
+</div>
+</div>
+</div>
+
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script>
+    <!--表单验证-->
+    $('.ui.form').form({
+        /*进行验证的区域*/
+        fields: {
+            username : {
+                identifier : 'username',   /* identifier标识   对name是title的进行验证*/
+                rules : [{
+                    type : 'empty',/*非空*/
+                    prompt : '请输入用户名'  /*提示*/
+                }],
+            },
+            password : {
+                identifier : 'password',   /* identifier标识   对name是title的进行验证*/
+                rules : [{
+                    type : 'empty',/*非空*/
+                    prompt : '请输入密码'  /*提示*/
+                }],
+            }
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

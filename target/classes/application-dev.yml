@@ -1,0 +1,18 @@
+spring:
+  #连接数据库信息
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myblog?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#日志配置
+logging:
+  level:
+    root: info
+    com.myproject.myblog: debug
+  file: log/blog-dev.log

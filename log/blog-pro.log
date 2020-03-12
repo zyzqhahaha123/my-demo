@@ -1,0 +1,4 @@
+2020-03-09 10:32:29.813  INFO 500 --- [main] c.m.myblog.MyBlogApplicationTests        : Starting MyBlogApplicationTests on AB13OOKB16CWA5U with PID 500 (started by Administrator in D:\software\myproject\my-blog)
+2020-03-09 10:32:29.823  INFO 500 --- [main] c.m.myblog.MyBlogApplicationTests        : The following profiles are active: pro
+2020-03-09 10:32:39.109  WARN 500 --- [main] o.h.b.i.SessionFactoryBuilderImpl        : Unrecognized hbm2ddl_auto value : noe.  Supported values include create, create-drop, update, and validate.  Ignoring
+2020-03-09 10:32:45.534  INFO 500 --- [main] c.m.myblog.MyBlogApplicationTests        : Started MyBlogApplicationTests in 20.347 seconds (JVM running for 21.686)

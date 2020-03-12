@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <!-- 移动端浏览的一个缩放-->
+    <meta name="=viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+
+    <!--导航 -->
+    <!--ui表示ui组件  inverted(反转)目的是让页面成黑色 segment(片段)  attached:为了让黑框没有圆角-->
+    <nav th:replace="_fragments :: menu(1)" class="ui inverted vertical segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container"><!--container 容器-->
+            <!--menu菜单  因为上面用了inverted所以下面也要用inverted,保持风格一致,不然会是白色-->
+            <div class="ui inverted secondary menu stackable">
+                <!-- 定义一个Log-->
+                <h1 class="ui header teal item">Blog</h1>
+                <a href="#" class="m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>归档</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于</a>
+                <div class="right m-item item m-mobile-hide">
+                    <form name="search" action="#" th:action="@{/search}" target="_blank">
+                        <div class="ui icon transparent inverted input ">
+                            <!--因为它是Input元素，所以这里使用 th:value=""-->
+                            <input th:value="${query}" name="query" type="text" placeholder="搜索">
+                            <i onclick="document.forms['search'].submit()" class="ui search link icon"></i>
+                            <!--document.forms['search'] 获取表单对象 -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+
+    <!--中间内容 -->
+    <div class="m-container-small m-padded-tb-big">
+        <div class="ui container"><!--用了container可以无论在PC端还是移动端都可以有一个自适应，有一个更好的显示效果-->
+            <!--header头部-->
+            <div class="ui top attached segment">
+                <div class="ui middle aligned two column grid"><!--这里指定两列,左右两边-->
+                    <div class="column">
+                        <h3 class="ui teal header">搜索结果</h3>
+                    </div>
+                    <div class="right aligned column">
+                        共<h3 class="ui orange header m-inline-block" th:text="${page.totalElements}">14</h3>个<!--h标签是block标签(块标签)，所以会换行，因此要把它变成不是block标签-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui top attached teal segment">
+                <div class="ui padding vertical segment m-padded-tb-huge" th:each="blog : ${page.content}">
+                    <div class="ui middle aligned mobile reversed stackable grid" >
+                        <div class="eleven wide column">
+                            <div class="ui header center aligned">
+                                <h2 class="m-padded-mini" ><a th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" th:text="${blog.title}" class="m_black">相离莫相忘，且行且珍惜</a></h2>
+                            </div>
+                            <p class="m-text" th:text="|${blog.description}......|">
+                                人生一梦，浮生一醉，道不过两手空空的来，又两手空空的去，人生每一卷喜怒哀乐，仿佛缘分天注定，一盘棋算尽多少春秋冬夏，送有多少恩爱迷离?
+                                故事铺开长卷，破土而出的发芽、生机盎然的盛开、无可奈何的凋败，最后带着牵挂和泪水归于尘土。
+                                若是有来生，再一字一句品读过往，会发现，那每一篇爱情的故事，不论是千古佳话，亦或是千古悲剧，都是不舍的情缘。
+                                人生百年化成一年，究竟是哪个时节最值得留恋?
+                                是春天百花齐放、展开希望的绚烂?是夏天痴情热烈、魅力四射的多姿?是秋天硕果累累、挂满枝头的收获?还是冬天宁静祥和、心无杂念的平淡?
+                                没必要，做出选择，不要觉得初春时节的青春懵懂无知，不要觉得烈夏时节的壮年劳累辛苦，不要觉得悲秋时节的中年心烦意乱，更不要因为隆冬时节已是垂暮之年而伤心流泪。
+                                人生最美的风景，终不是最后得到了什么，而倒是人生的百年旅程每一篇故事，也就是一年的四季更替每一段风景。
+                            </p>
+                            <div class="ui  grid">
+                                <div class="ui eleven wide column ">
+                                    <div class="ui horizontal link list">
+                                        <div class="ui item">
+                                            <img th:src="@{${blog.user.avatar}}" class="ui rounded image" style="width: 2em" src="/images/blgs_man1.jpg">
+                                            <div th:text="${blog.user.nickname}" class="content"><a href="#" class="header">狗蛋儿</a></div>
+                                        </div>
+                                        <div class="ui item ">
+                                            <i class="calendar icon"></i>
+                                            <span  th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}" ></span>
+                                        </div>
+                                        <div class="item" >
+                                            <i class="eye icon"></i><span style="margin: 5px !important;" th:text="${blog.views}">123</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui right aligned five wide column">
+                                    <a href="#" th:href="${blog.type.name}" target="_blank" class="ui teal basic label m-text-index">认知升级</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="five wide  column  ">
+                            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank"><!--target="_blank" 点击图片会打开一个新的页面-->
+                                <img th:src="@{${blog.firstPicture}}" class="ui rounded image" style="width: 220px; height: 200px;" src="/images/blogs1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/*-->
+                <div class="ui padded vertical segment m-padded-tb-huge m-mobile-lr-clear">
+                    <div class="ui mobile reversed stackable grid">
+                        <div class="eleven wide column">
+                            <h2 class="ui header">相离莫相忘，且行且珍惜</h2>
+                            <p class="m-text ">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp人生一梦，浮生一醉，道不过两手空空的来，又两手空空的去，人生每一卷喜怒哀乐，仿佛缘分天注定，一盘棋算尽多少春秋冬夏，送有多少恩爱迷离?
+                                故事铺开长卷，破土而出的发芽、生机盎然的盛开、无可奈何的凋败，最后带着牵挂和泪水归于尘土。
+                                若是有来生，再一字一句品读过往，会发现，那每一篇爱情的故事，不论是千古佳话，亦或是千古悲剧，都是不舍的情缘。
+                                人生百年化成一年，究竟是哪个时节最值得留恋?
+                                是春天百花齐放、展开希望的绚烂?是夏天痴情热烈、魅力四射的多姿?是秋天硕果累累、挂满枝头的收获?还是冬天宁静祥和、心无杂念的平淡?
+                                没必要，做出选择，不要觉得初春时节的青春懵懂无知，不要觉得烈夏时节的壮年劳累辛苦，不要觉得悲秋时节的中年心烦意乱，更不要因为隆冬时节已是垂暮之年而伤心流泪。
+                                人生最美的风景，终不是最后得到了什么，而倒是人生的百年旅程每一篇故事，也就是一年的四季更替每一段风景。
+                            </p>
+                            <div class="ui stackable grid">
+                                <div class="row">
+                                    <div class="ui eleven wide column">
+                                        <div class="ui horizontal link list">
+                                            <div class="ui item">
+                                                <img class="ui avatar image" style="width: 2em" src="/images/blgs_man1.jpg">
+                                                <div class="content"><a href="#" class="header">狗蛋儿</a></div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar icon"></i>2020-2-20
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i>123
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ui right aligned five wide column">
+                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-opacity-mini">认知升级</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <a class="ui teal basic left pointing label">方法论</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="five wide column middle aligned m-mobile-image">
+                            <a href="#" target="_blank" ><!--target="_blank" 点击图片会打开一个新的页面-->
+                                <img class="ui rounded image" style="width: 220px; height: 200px;" src="/images/blogs1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="ui padded vertical segment m-padded-tb-huge m-mobile-lr-clear">
+                    <div class="ui mobile reversed stackable grid">
+                        <div class="eleven wide column">
+                            <h2 class="ui header">相离莫相忘，且行且珍惜</h2>
+                            <p class="m-text ">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp人生一梦，浮生一醉，道不过两手空空的来，又两手空空的去，人生每一卷喜怒哀乐，仿佛缘分天注定，一盘棋算尽多少春秋冬夏，送有多少恩爱迷离?
+                                故事铺开长卷，破土而出的发芽、生机盎然的盛开、无可奈何的凋败，最后带着牵挂和泪水归于尘土。
+                                若是有来生，再一字一句品读过往，会发现，那每一篇爱情的故事，不论是千古佳话，亦或是千古悲剧，都是不舍的情缘。
+                                人生百年化成一年，究竟是哪个时节最值得留恋?
+                                是春天百花齐放、展开希望的绚烂?是夏天痴情热烈、魅力四射的多姿?是秋天硕果累累、挂满枝头的收获?还是冬天宁静祥和、心无杂念的平淡?
+                                没必要，做出选择，不要觉得初春时节的青春懵懂无知，不要觉得烈夏时节的壮年劳累辛苦，不要觉得悲秋时节的中年心烦意乱，更不要因为隆冬时节已是垂暮之年而伤心流泪。
+                                人生最美的风景，终不是最后得到了什么，而倒是人生的百年旅程每一篇故事，也就是一年的四季更替每一段风景。
+                            </p>
+                            <div class="ui stackable grid">
+                                <div class="row">
+                                    <div class="ui eleven wide column">
+                                        <div class="ui horizontal link list">
+                                            <div class="ui item">
+                                                <img class="ui avatar image" style="width: 2em" src="/images/blgs_man1.jpg">
+                                                <div class="content"><a href="#" class="header">狗蛋儿</a></div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar icon"></i>2020-2-20
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i>123
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ui right aligned five wide column">
+                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-opacity-mini">认知升级</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <a class="ui teal basic left pointing label">方法论</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="five wide column middle aligned m-mobile-image">
+                            <a href="#" target="_blank" ><!--target="_blank" 点击图片会打开一个新的页面-->
+                                <img class="ui rounded image" style="width: 220px; height: 200px;" src="/images/blogs1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="ui padded vertical segment m-padded-tb-huge m-mobile-lr-clear">
+                    <div class="ui mobile reversed stackable grid">
+                        <div class="eleven wide column">
+                            <h2 class="ui header">相离莫相忘，且行且珍惜</h2>
+                            <p class="m-text ">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp人生一梦，浮生一醉，道不过两手空空的来，又两手空空的去，人生每一卷喜怒哀乐，仿佛缘分天注定，一盘棋算尽多少春秋冬夏，送有多少恩爱迷离?
+                                故事铺开长卷，破土而出的发芽、生机盎然的盛开、无可奈何的凋败，最后带着牵挂和泪水归于尘土。
+                                若是有来生，再一字一句品读过往，会发现，那每一篇爱情的故事，不论是千古佳话，亦或是千古悲剧，都是不舍的情缘。
+                                人生百年化成一年，究竟是哪个时节最值得留恋?
+                                是春天百花齐放、展开希望的绚烂?是夏天痴情热烈、魅力四射的多姿?是秋天硕果累累、挂满枝头的收获?还是冬天宁静祥和、心无杂念的平淡?
+                                没必要，做出选择，不要觉得初春时节的青春懵懂无知，不要觉得烈夏时节的壮年劳累辛苦，不要觉得悲秋时节的中年心烦意乱，更不要因为隆冬时节已是垂暮之年而伤心流泪。
+                                人生最美的风景，终不是最后得到了什么，而倒是人生的百年旅程每一篇故事，也就是一年的四季更替每一段风景。
+                            </p>
+                            <div class="ui stackable grid">
+                                <div class="row">
+                                    <div class="ui eleven wide column">
+                                        <div class="ui horizontal link list">
+                                            <div class="ui item">
+                                                <img class="ui avatar image" style="width: 2em" src="/images/blgs_man1.jpg">
+                                                <div class="content"><a href="#" class="header">狗蛋儿</a></div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar icon"></i>2020-2-20
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i>123
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ui right aligned five wide column">
+                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-opacity-mini">认知升级</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <a class="ui teal basic left pointing label">方法论</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="five wide column middle aligned m-mobile-image">
+                            <a href="#" target="_blank" ><!--target="_blank" 点击图片会打开一个新的页面-->
+                                <img class="ui rounded image" style="width: 220px; height: 200px;" src="/images/blogs1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="ui padded vertical segment m-padded-tb-huge m-mobile-lr-clear">
+                    <div class="ui mobile reversed stackable grid">
+                        <div class="eleven wide column">
+                            <h2 class="ui header">相离莫相忘，且行且珍惜</h2>
+                            <p class="m-text ">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp人生一梦，浮生一醉，道不过两手空空的来，又两手空空的去，人生每一卷喜怒哀乐，仿佛缘分天注定，一盘棋算尽多少春秋冬夏，送有多少恩爱迷离?
+                                故事铺开长卷，破土而出的发芽、生机盎然的盛开、无可奈何的凋败，最后带着牵挂和泪水归于尘土。
+                                若是有来生，再一字一句品读过往，会发现，那每一篇爱情的故事，不论是千古佳话，亦或是千古悲剧，都是不舍的情缘。
+                                人生百年化成一年，究竟是哪个时节最值得留恋?
+                                是春天百花齐放、展开希望的绚烂?是夏天痴情热烈、魅力四射的多姿?是秋天硕果累累、挂满枝头的收获?还是冬天宁静祥和、心无杂念的平淡?
+                                没必要，做出选择，不要觉得初春时节的青春懵懂无知，不要觉得烈夏时节的壮年劳累辛苦，不要觉得悲秋时节的中年心烦意乱，更不要因为隆冬时节已是垂暮之年而伤心流泪。
+                                人生最美的风景，终不是最后得到了什么，而倒是人生的百年旅程每一篇故事，也就是一年的四季更替每一段风景。
+                            </p>
+                            <div class="ui stackable grid">
+                                <div class="row">
+                                    <div class="ui eleven wide column">
+                                        <div class="ui horizontal link list">
+                                            <div class="ui item">
+                                                <img class="ui avatar image" style="width: 2em" src="/images/blgs_man1.jpg">
+                                                <div class="content"><a href="#" class="header">狗蛋儿</a></div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar icon"></i>2020-2-20
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i>123
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ui right aligned five wide column">
+                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-opacity-mini">认知升级</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <a class="ui teal basic left pointing label">方法论</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="five wide column middle aligned m-mobile-image">
+                            <a href="#" target="_blank" ><!--target="_blank" 点击图片会打开一个新的页面-->
+                                <img class="ui rounded image" style="width: 220px; height: 200px;" src="/images/blogs1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!--*/-->
+            </div>
+            <!-- footer页尾部分 -->
+            <div class="ui bottom attached segment">
+                <div class="ui middle aligned two column grid" th:if="${page.totalPages}>1"><!--这里指定两列,左右两边-->
+                    <div class="column">
+                        <a th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" href="#" class="ui mini teal basic button">上页</a>
+                    </div>
+                    <div class="right aligned column">
+                        <a th:href="@{/(page=${page.number}+1)}" th:unless="${page.first}" href="#" class="ui mini teal basic button">下页</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 底部-->
+    <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive" >
+        <div class="ui center aligned container">
+            <div class="ui inverted  divided grid  mobile reversed stackable">
+                <div class="three wide column">
+                    <div class="ui inverted link list">
+                        <div class="item">
+                            <img class="ui rounded image" alt="图片路径不对" style="width: 10em" src="/images/myWex.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="three wide column m-text-thin m-text-space  ">
+                    <h4 class="ui inverted header m-opacity-mini">
+                        最新博客
+                    </h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">用户故事 (user story)</a>
+                        <a href="#" class="item">用户故事 (user story)</a>
+                        <a href="#" class="item">用户故事 (user story)</a>
+                    </div>
+
+                </div>
+                <div class="three wide column m-opacity-mini ">
+                    <h4 class="ui inverted header m-text-thin m-text-space ">
+                        联系方式
+                    </h4>
+                    <div class="ui inverted link list m-opacity-mini">
+                        <a href="#" class="item">Email：2766796710@qq.com</a>
+                        <a href="#" class="item">QQ：2766796710</a>
+                    </div>
+                </div>
+                <div class="seven wide column m-opacity-mini ">
+                    <h4 class="ui inverted header m-text-thin m-text-space ">
+                        Introduce
+                    </h4>
+                    <div class="ui inverted link list">
+                        <p class="item">这是我写的的一个博客，请指教</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-space m-opacity-miny">这是一段空的描述啊啊啊啊啊啊啊啊啊啊</p>
+
+        </div>
+    </footer>
+
+<!--/*<th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--/*</th:block>/*/-->
+
+
+<script>
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+</script>
+
+
+</body>
+</html>

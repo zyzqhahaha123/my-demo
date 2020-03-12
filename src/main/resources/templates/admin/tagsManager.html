@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <!-- 移动端浏览的一个缩放-->
+    <meta name="=viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>标签管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+<!--导航 -->
+<!--ui表示ui组件  inverted(反转)目的是让页面成黑色 segment(片段)  attached:为了让黑框没有圆角-->
+<nav th:replace="admin/_fragments :: menu(3)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container"><!--container 容器-->
+        <!--menu菜单  因为上面用了inverted所以下面也要用inverted,保持风格一致,不然会是白色-->
+        <div class="ui inverted secondary menu stackable">
+            <!-- 定义一个Log-->
+            <h1 class="ui header teal item">管理后台</h1>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini home icon"></i>博客</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+            <div class="right m-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img class="ui image" src="../../static/images/blgs_man1.jpg" style="width: 25px;height: 25px">
+                        狗蛋儿
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <!--下拉的菜单-->
+                    <div class="menu">
+                        <a href="#" class="item">注销</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<!--二级导航-->
+<div class="ui attached pointing menu "><!- attached 会连接上一个元素--->
+    <div class="ui container">
+        <div class="right menu"><!--为了将下面的两个放到右边-->
+            <a href="#" th:href="@{/admin/tagsInput}" class=" item ">新增</a>
+            <a href="#" th:href="@{/admin/listTag}" class="teal active item ">列表</a><!--active 会让下面有一个角-->
+        </div>
+    </div>
+</div>
+
+<!--中间内容 -->
+<div class="m-container-small m-padded-tb-big">
+    <div class="ui container"><!--用了container可以无论在PC端还是移动端都可以有一个自适应，有一个更好的显示效果-->
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+            <i class="close icon"></i>
+            <div class="header">提示：</div>
+            <p th:text="${message}">操作成功！</p>
+        </div>
+        <table class="ui celled table"><!-- celled 是添加网格线 -->
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>标签名称</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each=" tag,iterStat : ${page.content}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${tag.name}">练习清单</td>
+                    <td>
+                        <a th:href="@{/admin/editTag(id=${tag.id})}" class="ui mini teal basic button" href="#">编辑</a>
+                        <a th:href="@{/admin/deleteTag/{id}(id=${tag.id})}" class="ui mini red basic button" href="#">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot><!--这个标签是指表的最底部-->
+                <tr>
+                    <th colspan="6"><!--colspan 是合并列单元格-->
+                        <div class="ui mini floated pagination menu" th:if="${page.totalPages}>1"> <!--获取 参数 ${}-->
+                            <a class=" item" th:href="@{/admin/listTag(page=${page.number}-1)}" th:unless="${page.first}">上一页</a>
+                            <a class=" item" th:href="@{/admin/listTag(page=${page.number}+1)}" th:unless="${page.last}">下一页</a>
+                        </div>
+                        <div class="m-insert-padding">
+                            <a class="ui mini right floated green button " href="#" th:href="@{/admin/tagsInput}">新增</a>
+                        </div>
+
+                        <!--<div class="ui right floated pagination menu">
+                            <a class="icon item">
+                                <i class="left chevron icon"></i>
+                            </a>
+                            <a class="item">1</a>
+                            <a class="item">2</a>
+                            <a class="item">3</a>
+                            <a class="item">4</a>
+                            <a class="icon item">
+                                <i class="right chevron icon"></i>
+                            </a>
+                        </div>-->
+                    </th>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </div>
+</div>
+
+
+<!-- 底部-->
+<footer th:replace="admin/_fragments :: footer " class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+        <div class="ui inverted  divided grid  mobile reversed stackable">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img class="ui rounded image" alt="图片路径不对" style="width: 10em" src="../../static/images/myWex.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column m-text-thin m-text-space  ">
+                <h4 class="ui inverted header m-opacity-mini">
+                    最新博客
+                </h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">用户故事 (user story)</a>
+                    <a href="#" class="item">用户故事 (user story)</a>
+                    <a href="#" class="item">用户故事 (user story)</a>
+                </div>
+
+            </div>
+            <div class="three wide column m-opacity-mini ">
+                <h4 class="ui inverted header m-text-thin m-text-space ">
+                    联系方式
+                </h4>
+                <div class="ui inverted link list m-opacity-mini">
+                    <a href="#" class="item">Email：2766796710@qq.com</a>
+                    <a href="#" class="item">QQ：2766796710</a>
+                </div>
+            </div>
+            <div class="seven wide column m-opacity-mini ">
+                <h4 class="ui inverted header m-text-thin m-text-space ">
+                    Introduce
+                </h4>
+                <div class="ui inverted link list">
+                    <p class="item">这是我写的的一个博客，请指教</p>
+                </div>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-space m-opacity-miny">这是一段空的描述啊啊啊啊啊啊啊啊啊啊</p>
+
+    </div>
+</footer>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown')
+        .dropdown({
+            on: 'hover'
+        });
+
+    //消息关闭初始化 Semantic UI Message消息窗口关闭 $(’.message .close’) 其中message后面有一个空格，然后.close
+    $(' .message .close').on('click',function () {
+        $(this).closest(' .message').transition('fade');////fade消失动画
+    });
+
+</script>
+
+</body>
+</html>

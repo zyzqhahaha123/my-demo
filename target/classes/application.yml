@@ -1,0 +1,9 @@
+spring:
+  thymeleaf:
+    mode: HTML
+  profiles:
+    active: dev
+  messages:
+    basename: myproperties/messages
+
+comment.avatar: /images/plHead.jpg
